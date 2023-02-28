@@ -1,5 +1,6 @@
 Poznámky:
-test 0
-test 1
-test 2
-test 3
+/ - pokračování příkazu na dalším řádku
+; - více příkazů za sebe (nní běžné)
+print("...", end) (nedá enter)
+range (x, y, z) {až 3 znaky}
+import numpy as np
