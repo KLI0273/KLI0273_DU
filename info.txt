@@ -4,3 +4,8 @@ Poznámky:
 print("...", end) (nedá enter)
 range (x, y, z) {až 3 znaky}
 import numpy as np
+
+vyskreslování jednoduchých grafů - pls.plot()
+vykreslování matic jako obrázek - plt.imshow()
+
+pip install numpy (install numpy)
