@@ -8,12 +8,12 @@ import numpy as np
 
 b = np.array([1, 2, 3])
 print(b)
-b = np.zeros()
+b = np.zeros(5)
 print(b)
-b = np.ones()
+b = np.ones(4)
 print(b)
-b = np.linspace()
+b = np.linspace(6, 2)
 print(b)
-b = np.random.rand()
+b = np.random.rand(9)
 print(b)
     
