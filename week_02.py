@@ -1,4 +1,3 @@
-import numpy as np
 import math as ma
 
 def odmocnina(a, n): #a = cislo #* n = pocet opakovani cyklu
@@ -13,18 +12,24 @@ def aproximace_pi(N):
     b = 1
     for i in range(N):
         v = odmocnina(1**2 - (b/2)**2, 100)
-        S = 6*b*(v/2)
-        if(i>0): S = S*(2**i)
-        b = odmocnina((b/2)**2 + (1-v)**2,100)
-        if(b<0): b *= -1 
+        S = 6*(b*(v/2))*(2**i)
+        b = odmocnina((b/2)**2 + (1-v)**2,100) #max 97, pro vyzsi n-uhelníky je potreba vice iteraci
         if(b == 0): return 'error'
-
     return S
 
-p = aproximace_pi(8)
+def aproximace_pi_newton(n):
+    a = 1/16
+    for i in range(1,n+1):
+        sum = (a/(2*i+1))
+        a = a*((2*(i+1)-3)/(2*(i+1)*4))
+    m = odmocnina(3,1000)
+    q = 12*(-(m/8) + 1/2 - sum)
+    return q
+    
+q = aproximace_pi_newton(10)
+p = aproximace_pi(97)
+print(q)
+print('------------------')
 print(p)
+print('------------------')
 print(ma.pi)
-
-#v = odmocnina(a**2 - (a/2)**2, 100)
-#S = 6*a*(v/2)
-#a = odmocnina((a/2)**2 + (1-v)**2,100)
