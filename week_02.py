@@ -1,3 +1,5 @@
+# ukoly z hodiny jsou v week_02_hodina.py
+
 import math as ma
 
 def odmocnina(a, n): #a = cislo #* n = pocet opakovani cyklu
