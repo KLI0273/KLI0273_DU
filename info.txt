@@ -9,3 +9,5 @@ vyskreslování jednoduchých grafů - pls.plot()
 vykreslování matic jako obrázek - plt.imshow()
 
 pip install numpy (install numpy)
+
+nazev.ipynb (jupyter)
