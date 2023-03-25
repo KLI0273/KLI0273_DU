@@ -1,0 +1,2 @@
+prim = []
+print(len(prim))
