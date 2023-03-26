@@ -1,0 +1,10 @@
+cislo -> 1, mocnina -> 1, mocnina mocniny -> 1 
+cislo -> 2, mocnina -> 4, mocnina mocniny -> 16 
+cislo -> 3, mocnina -> 9, mocnina mocniny -> 81 
+cislo -> 4, mocnina -> 16, mocnina mocniny -> 256 
+cislo -> 5, mocnina -> 25, mocnina mocniny -> 625 
+cislo -> 6, mocnina -> 36, mocnina mocniny -> 1296 
+cislo -> 7, mocnina -> 49, mocnina mocniny -> 2401 
+cislo -> 8, mocnina -> 64, mocnina mocniny -> 4096 
+cislo -> 9, mocnina -> 81, mocnina mocniny -> 6561 
+cislo -> 10, mocnina -> 100, mocnina mocniny -> 10000 
