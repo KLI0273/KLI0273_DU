@@ -11,6 +11,11 @@ class Operator:
     def diff(self):
         pass
     
+    ####-------------------------------------------------------------
+    def simplify(self):
+        pass
+    ####-------------------------------------------------------------
+
     def __add__(self, other):
         return Addition(self, other)
 
@@ -34,19 +39,40 @@ class UnaryOperator(Operator):
     
     def __str__(self):
         return type(self).__name__ + "(" + str(self.argument) + ")"
+    
+    ####-------------------------------------------------------------
+    def simplify(self):
+        return self
+    ####-------------------------------------------------------------
         
 class Addition(BinaryOperator):
     def __str__(self):
         return "(" + str(self.levy_argument) +  "+" + str(self.pravy_argument) + ")"
+   
     def diff(self):
         return self.levy_argument.diff() + self.pravy_argument.diff()
     
 class Multiplication(BinaryOperator):
     def __str__(self):
+#        if(self.levy_argument == 1):
+#            return "(" + str(self.pravy_argument) + ")"
         return "(" + str(self.levy_argument) + "*" + str(self.pravy_argument) + ")"
-    def diff(self):
-        return self.levy_argument.diff() * self.pravy_argument + self.levy_argument * self.pravy_argument.diff() 
+    
+    ###--------------------------------------------------------------
+    def simplify(self):
+        if self.levy_argument == 0 or self.pravy_argument == 0:
+            return cst(0)
+        if self.levy_argument == 1:
+            return self.pravy_argument
+        if self.pravy_argument == 1:
+            return self.levy_argument
+        return self
+    ###-------------------------------------------------------------
 
+    def diff(self):
+#        if(self.levy_argument == 1):
+#            return self.pravy_argument.diff()
+        return self.levy_argument.diff() * self.pravy_argument + self.levy_argument * self.pravy_argument.diff() 
     
 class cst(UnaryOperator):
     def __init__(self, value):
@@ -125,8 +151,6 @@ class frc(UnaryOperator):
     def diff(self):
         return Multiplication(cst(-1), frc(mocnina(self.argument, 2)) * self.argument.diff())
     
-
-
 x = identity()
 f1 = sin(x + cos(x*x)) + cst(1)
 print(f1)
