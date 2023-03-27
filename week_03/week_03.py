@@ -12,16 +12,13 @@ class Operator:
         pass
     
     def __add__(self, other):
-        return Addition(self, other)   #* TODO (použijte Addition)
-        pass
+        return Addition(self, other)
 
     def __sub__(self, other):
-        return Addition(self, Multiplication(cst(-1), other)) #* TODO (použijte Addition a Multiplication se zápornou konstantu)
-        pass
+        return Addition(self, Multiplication(cst(-1), other))
     
     def __mul__(self, other):
-        return Multiplication(self, other)  #* TODO (použijte Multiplication)
-        pass
+        return Multiplication(self, other)
     
 class BinaryOperator(Operator):
     def __init__(self, levy_argument, pravy_argument):
@@ -39,51 +36,44 @@ class UnaryOperator(Operator):
         return type(self).__name__ + "(" + str(self.argument) + ")"
         
 class Addition(BinaryOperator):
-#    def __str__(self):
-#        return self.levy_argument.diff() + self.pravy_argument.diff() #* TODO vypíšeme něco jako (levy_argument)+(pravy_argument)
-#        pass
+    def __str__(self):
+        return "(" + str(self.levy_argument) +  "+" + str(self.pravy_argument) + ")"
     def diff(self):
-        return self.levy_argument.diff() + self.pravy_argument.diff() #?Addition(identity(self.levy_argument), identity(self.pravy_argument)) #* TODO
-        pass
+        return self.levy_argument.diff() + self.pravy_argument.diff()
     
 class Multiplication(BinaryOperator):
-#    def __str__(self):
-#        self.levy_argument * self.pravy_argument #* TODO vypíšeme něco jako (levy_argument)*(pravy_argument)
-#        pass
+    def __str__(self):
+        return "(" + str(self.levy_argument) + "*" + str(self.pravy_argument) + ")"
     def diff(self):
-        return self.levy_argument.diff() * self.pravy_argument.diff() + self.levy_argument * self.pravy_argument.diff() #?Addition(Multiplication(identity(self.levy_argument), self.pravy_argument),Multiplication(self.levy_argument, identity(self.pravy_argument)))  #* TODO
-        pass
+        return self.levy_argument.diff() * self.pravy_argument + self.levy_argument * self.pravy_argument.diff() 
+
     
 class cst(UnaryOperator):
     def __init__(self, value):
         self.value = value
     def __str__(self):
-        return str(self.value) #* TODO vypíšeme něco jako value
-        pass
+        return str(self.value)
     def diff(self):
-        return cst(0) #* TODO
-        pass
+        return cst(0)
     
 class identity(UnaryOperator):
     def __init__(self):
         pass
     def __str__(self):
-        return "x"    #?print(x)  #* TODO vypíšeme něco jako x   
-        pass
+        return "x"
     def diff(self):
-        return cst(1) #* TODO
-        pass
+        return cst(1)
     
 class mocnina(UnaryOperator):
     def __init__(self, argument, exponent):
         self.argument = argument
         self.exponent = exponent
+
     def __str__(self):
-        return "(" + str(self.argument) + ")^" + str(self.exponent)    #* TODO vypíšeme něco jako argument^exponent
-        pass
+        return "(" + str(self.argument) + ")^" + str(self.exponent)
+    
     def diff(self):
-        return Multiplication(self.exponent, mocnina(self.argument, self.exponent - 1) * self.argument.diff()) #?mocnina(self, self.exponent * self.argument, self.exponent -1)    #* TODO
-        pass
+        return Multiplication(self.exponent, mocnina(self.argument, self.exponent - 1) * self.argument.diff())
     
 class sin(UnaryOperator):
     def __init__(self,argument):
@@ -93,8 +83,7 @@ class sin(UnaryOperator):
         return "sin(" + str(self.argument) + ")"
     
     def diff(self):
-        return cos(self.argument) * self.argument.diff() #?print(cos)    #* TODO
-        pass
+        return cos(self.argument) * self.argument.diff()
 
 class cos(UnaryOperator):
     def __init__(self, argument):
@@ -104,8 +93,7 @@ class cos(UnaryOperator):
         return "cos(" + str(self.argument) + ")"
     
     def diff(self):
-        return Multiplication(sin(self.argument) * self.argument.diff(), -1)  #?print(-sin)   #* TODO
-        pass
+        return Multiplication(sin(self.argument), self.argument.diff() * cst(-1))
 
 class exp(UnaryOperator):
     def __init__(self, argument):
@@ -115,8 +103,7 @@ class exp(UnaryOperator):
         return "exp(" + str(self.argument) + ")"
 
     def diff(self):
-        return Multiplication(exp(self.argument), self.argument.diff())        #?mocnina.diff(self)    #* TODO
-        pass
+        return Multiplication(exp(self.argument), self.argument.diff())
     
 class ln(UnaryOperator):
     def __init__(self, argument):
@@ -127,24 +114,20 @@ class ln(UnaryOperator):
 
     def diff(self):
         return Multiplication(frc(identity(), self.argument), self.argument.diff())
-        #?1 // identity(self)    #* TODO
-        pass
 
 class frc(UnaryOperator):
     def __init__(self, argument):
         self.argument = argument
-
+    
     def __str__(self):
-        return "1/(" + str(self.argument) + ")"    #? print(1//mocnina.diff(self, -1))  #* TODO vypíšeme něco jako 1/(argument)
-        pass
+        return "1/(" + str(self.argument) + ")"
     
     def diff(self):
-        return Multiplication(cst(-1), Multiplication(Multiplication(self.argument.diff(), self), Multiplication(self.argument, self)))    #? self * self.diff(self)    #* TODO
-        pass
+        return Multiplication(cst(-1), frc(mocnina(self.argument, 2)) * self.argument.diff())
+    
 
-# takto by se to mělo používat
+
 x = identity()
-# sin(x + cos(x*x)) + 1
 f1 = sin(x + cos(x*x)) + cst(1)
 print(f1)
 print(f1.diff())
