@@ -5,7 +5,7 @@ def mandelbrot_set(x_min = -2, x_max = 1, y_min = -1.5, y_max = 1.5, n = 1000, k
     
     y, x = np.mgrid[x_min:x_max:complex(0, n), y_min:y_max:complex(0, n)]#.astype(np.float128)
     c = (x-0.5)+(y+0.5)* 1j
-    divergence_matrix = np.zeros((np.shape(c))) +k
+    divergence_matrix = np.zeros((np.shape(c)))+k
     zn = 0
     for i in range(k):
         zn = (zn**2) + c
@@ -22,5 +22,5 @@ n = 200
 k = 100
 
 divergence_matrix = mandelbrot_set(n=n, k=k)
-plt.imshow(divergence_matrix) #, cmap='terrain'
+plt.imshow(divergence_matrix, cmap='terrain') #
 plt.show()
