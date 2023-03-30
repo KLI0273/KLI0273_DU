@@ -18,7 +18,7 @@ def mandelbrot_set(x_min = -2, x_max = 1, y_min = -1.5, y_max = 1.5, n = 1000, k
          
     return divergence_matrix
 
-n = 1000
+n = 100
 k = 100
 
 divergence_matrix = mandelbrot_set(n=n, k=k)
