@@ -1,21 +1,24 @@
-"""""
-        if(k == 0):
-            hrana_Up = slice(current, current+2*k+1)
-            B[i+k:i-k-2:-1, j+k] = b[hrana_Up]
-            current += 2*k+1
-            
-            hrana_Left = slice(current, current+2*k+2)
-            B[i-k-1, j+k:j-k-2:-1] = b[hrana_Left]
-            current += 2*k+2
-            
-            hrana_Down = slice(current, current+2*k+2)
-            B[i-k:i+k+2, j-k-1] = b[hrana_Down]
-            current += 2*k+2
-            
-            hrana_Right = slice(current, current+2*k+2)
-            B[i+k+1, j-k:j+k+2 ] = b[hrana_Right]
-            current += 2*k+2
+import numpy as np
+import matplotlib.pyplot as plt
 
-            continue
-        """""
-        
+def mandelbrot_set(x_min=-2, x_max=1, y_min=-1.5, y_max=1.5, n=1000, k=100):
+    x, y = np.mgrid[x_min:x_max:complex(0, n), y_min:y_max:complex(0, n)]
+    c = x + y * 1j
+    zn = 0
+    divergence_matrix = np.zeros((np.shape(c)))
+
+    for i in range(k):
+        zn = zn**2 + c
+        divergent = np.abs(zn) > 2
+        divergent_now = divergent & (divergence_matrix == 0)
+        divergence_matrix[divergent_now] = n+1
+        zn[divergent] = 2
+
+    return divergence_matrix / np.max(divergence_matrix)
+
+n = 1000
+k = 100
+
+divergence_matrix = mandelbrot_set(n=n, k=k)
+plt.imshow(divergence_matrix)
+plt.show()
