@@ -1,24 +1,10 @@
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-def mandelbrot_set(x_min=-2, x_max=1, y_min=-1.5, y_max=1.5, n=1000, k=100):
-    y, x = np.mgrid[x_min:x_max:complex(0, n), y_min:y_max:complex(0, n)]
-    c = (x-0.5) + (y+0.5) * 1j
-    zn = 0
-    divergence_matrix = np.zeros((np.shape(c)))
+def r(ot):
+    return 2 * np.sin(3*ot)
+ot = np.linspace(0,1,100)
 
-    for i in range(k):
-        zn = zn**2 + c
-        divergent = np.abs(zn) > 2
-        divergent_now = divergent & (divergence_matrix == 0)
-        divergence_matrix[divergent_now] = i+1
-        zn[divergent] = 2
-
-    return divergence_matrix / np.max(divergence_matrix)
-
-n = 1000
-k = 100
-
-divergence_matrix = mandelbrot_set(n=n, k=k)
-plt.imshow(divergence_matrix, cmap = "hot")
+plt.polar(ot, r(ot))
+plt.title ("PP - Polar Plot", fontsize = 12)
 plt.show()
