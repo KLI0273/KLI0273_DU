@@ -1,26 +1,68 @@
+import scipy.sparse as sparse
 import numpy as np
-import matplotlib.pyplot as plt
 
-def mandelbrot_set(x_min = -2, x_max = 1, y_min = -1.5, y_max = 1.5, n = 1000, k= 100):
-    
-    y, x = np.mgrid[x_min:x_max:complex(0, n), y_min:y_max:complex(0, n)]#.astype(np.float128)
-    c = (x-0.5)+(y+0.5)* 1j
-    divergence_matrix = np.zeros((np.shape(c)))+k
-    zn = 0
-    for i in range(k):
-        zn = (zn**2) + c
-        for m in range(n):
-            for l in range(n):
-                if(np.abs(zn[m, l]) > 2):
+def pocet_sousedu(i,j,n):
+    if((i != 0 and i != n-1) and (j != 0 and j != n-1)): return 4
+    elif(i,j == 0,0 or n-1,n-1 or n-1,n or n,n-1): return 2
+    else: return 3
 
-                    divergence_matrix[m,l] -= 1
-                    zn[m,l] = 2
-         
-    return divergence_matrix
+def create_vertex(n, diag_coeficient):
+    matrix = np.ones((n,n))*0
+    first = 1
+    for m in range(n):
+        for s in range(n):
+            if(m == s):
+                k = pocet_sousedu(m,s,n)
+                if(k == 2 and first == 0):
+                    matrix[m-1,s] = -epsilon
+                    matrix[m,s-1] = -epsilon
+                    matrix[m,s] = 1+(k*epsilon)
+                if(k == 2 and first == 1):
+                    matrix[m+1,s] = -epsilon
+                    matrix[m,s+1] = -epsilon
+                    first = 0
+                    matrix[m,s] = 1+(k*epsilon)
+                if(k == 4):
+                    matrix[m,s-1:s+2] = -epsilon
+                    matrix[m-1:m+2,s] = -epsilon
+                    matrix[m,s] = 1+(k*epsilon)-diag_coeficient
+    return matrix
 
-n = 200
-k = 100
+def diag(n):
+    matrix = np.ones((n,n))*0
+    for m in range(n):
+        for s in range(n):
+            if(m==s):matrix[m,s] = -epsilon
+    return matrix
 
-divergence_matrix = mandelbrot_set(n=n, k=k)
-plt.imshow(divergence_matrix, cmap='terrain') #
-plt.show()
+n = 6
+epsilon = 1e-1
+A = sparse.lil_matrix((n*n, n*n))
+diag_coeficient = epsilon
+pocet_iteraci = 1
+
+for i in range(n):
+    for j in range(n):
+        if(i==j):
+            vertex = create_vertex(n, diag_coeficient)
+            A[i*n:n*(i+1), j*n:n*(j+1)] = vertex
+            
+            if(n/pocet_iteraci > n/(n/2) and n%2 == 1):
+                diag_coeficient -= epsilon
+                pocet_iteraci += 1
+            elif(n/pocet_iteraci >= n/(n/2) and n%2 == 0):
+                if(n/pocet_iteraci != n/(n/2)):
+                    diag_coeficient -= epsilon
+                pocet_iteraci += 1
+            else:
+                diag_coeficient += epsilon
+                pocet_iteraci += 1
+
+
+            
+
+        if(i+1 == j or j+1 ==i):
+            matri = diag(n)
+            A[i*n:n*(i+1), j*n:n*(j+1)] = matri
+
+print(A.todense())
